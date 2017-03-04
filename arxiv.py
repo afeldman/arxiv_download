@@ -20,7 +20,12 @@ if __name__ == "__main__":
     if not os.path.isdir(path):
         os.mkdir( path, 0755 )
 
-    url = 'http://export.arxiv.org/api/query?search_query=%s&start=0&max_results=%s'%(args.query,args.max_results)
+    max_results = args.max_results
+
+    if max_results > 1999:
+        max_results = 1999
+
+    url = 'http://export.arxiv.org/api/query?search_query=%s&start=0&max_results=%s'%(args.query,max_results)
 
     data = urllib.urlopen(url).read()
     feed = feedparser.parse(data)

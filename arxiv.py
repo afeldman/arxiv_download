@@ -5,7 +5,7 @@ import urllib
 import wget
 import argparse
 import os
-import sys
+
 
 if __name__ == "__main__":
 
@@ -13,16 +13,17 @@ if __name__ == "__main__":
     parser.add_argument("-q","--query", help="query string")
     parser.add_argument("-m","--max_results", help="Maximal number of results", type=int, default = 10)
     parser.add_argument("-d","--download", help="no Download of the PDF", action="store_true")
+    parser.add_argument("-p","--prefix", help="download dir", default="./pdf")
     args = parser.parse_args()
 
-    path = "./pdf"
+    path = args.prefix
 
-    if not os.path.isdir(path):
-        os.mkdir( path, 0755 )
+    if not os.path.exists(path):
+        os.makedirs( path, 0755 )
 
     max_results = args.max_results
 
-    if max_results > 1999:
+    if max_results >= 2000:
         max_results = 1999
 
     url = 'http://export.arxiv.org/api/query?search_query=%s&start=0&max_results=%s'%(args.query,max_results)
@@ -40,13 +41,11 @@ if __name__ == "__main__":
             title = entry.title
             print title
 
-#            description =  entry.summary
-
             j = len(entry.links) - 1
 
             while ( j != 0 ):
                 if(entry.links[j].type == 'application/pdf' and not args.download):
-                    output='./%s/%s.pdf'%(path,title)
+                    output='%s/%s.pdf'%(path,title)
                     wget.download(entry.links[j].href, out=output)
 
                 j = j - 1

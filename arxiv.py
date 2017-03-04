@@ -4,7 +4,14 @@ import feedparser
 import urllib
 import wget
 
+import os
+
 if __name__ == "__main__":
+
+    path = "./pdf"
+
+    if not os.path.isdir(path):
+        os.mkdir( path, 0755 )
 
     url = 'http://export.arxiv.org/api/query?search_query=Deep Learning&start=0&max_results=2'
 
@@ -26,7 +33,12 @@ if __name__ == "__main__":
             while ( j != 0 ):
                 if(entry.links[j].type == 'application/pdf'):
                     print entry.links[j].href
-                    wget.download(entry.links[j].href)
+                    output='./%s/%s.pdf'%(path,title)
+                    wget.download(entry.links[j].href, out=output)
+#                    os.chmod(output,
+#                             stat.S_IRUSR |
+#                             stat.S_IRGRP |
+#                             stat.S_IROTH)
                 j = j - 1
 
         except Exception as e:

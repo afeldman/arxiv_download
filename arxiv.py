@@ -13,7 +13,7 @@ if __name__ == "__main__":
     if not os.path.isdir(path):
         os.mkdir( path, 0755 )
 
-    url = 'http://export.arxiv.org/api/query?search_query=Deep Learning&start=0&max_results=2'
+    url = 'http://export.arxiv.org/api/query?search_query=Deep Learning&start=0&max_results=1999'
 
     data = urllib.urlopen(url).read()
     feed = feedparser.parse(data)
@@ -35,10 +35,7 @@ if __name__ == "__main__":
                     print entry.links[j].href
                     output='./%s/%s.pdf'%(path,title)
                     wget.download(entry.links[j].href, out=output)
-#                    os.chmod(output,
-#                             stat.S_IRUSR |
-#                             stat.S_IRGRP |
-#                             stat.S_IROTH)
+
                 j = j - 1
 
         except Exception as e:

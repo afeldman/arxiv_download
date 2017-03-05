@@ -33,7 +33,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
 # set prefix and build directionary for dublicates
-    path = args.prefix
+    path = os.path.join(args.prefix, args.query)
     fnamelst = []
 
     if not os.path.exists(path):
@@ -83,8 +83,8 @@ if __name__ == "__main__":
 
                     out_file = hash_bytestr_iter(file_as_blockiter(open(output, 'rb')), hashlib.sha256())
                     if file_dict.has_key(out_file):
-                        print 'delete %s'%out_file
-                        os.remove()
+                        print 'delete %s' %out_file
+                        os.remove(out_file)
                     else:
                         file_dict[out_file]=output
 
